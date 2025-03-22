@@ -1,9 +1,23 @@
 #include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <sodium.h>
 #include "cpu.h"
 #include "platform.h"
 
 int main(void)
 {
+	// Initialize SDL2.
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
+		fprintf(stderr, "Failed to initialize SDL2: %s\n", SDL_GetError());
+		return EXIT_FAILURE;
+	}
+
+	// Initialize libsodium.
+	if (sodium_init() == -1) {
+		fprintf(stderr, "Failed to initialize libsodium\n");
+		return EXIT_FAILURE;
+	}
+
 	const int display_width = 64;
 	const int display_height = 32;
 
@@ -13,7 +27,6 @@ int main(void)
 		.display_width = display_width,
 		.display_height = display_height,
 	};
-
 	yac_cpu *cpu = yac_cpu_new(config);
 
 	const yac_platform_config platform_config = {
@@ -21,7 +34,6 @@ int main(void)
 		.window_width = display_width * 10,
 		.window_height = display_height * 10,
 	};
-
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
 	while (1) {
