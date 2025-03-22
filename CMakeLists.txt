@@ -25,3 +25,6 @@ target_link_libraries(${PROJECT_NAME}
         $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
+
+find_package(unofficial-sodium CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE unofficial-sodium::sodium)
