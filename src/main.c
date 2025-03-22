@@ -20,6 +20,7 @@ int main(void)
 
 	const int display_width = 64;
 	const int display_height = 32;
+	const int scalar = 10;
 
 	const yac_cpu_config config = {
 		.memory_size = 4096,
@@ -31,8 +32,8 @@ int main(void)
 
 	const yac_platform_config platform_config = {
 		.window_title = "Yet Another CHIP-8 Emulator",
-		.window_width = display_width * 10,
-		.window_height = display_height * 10,
+		.window_width = display_width * scalar,
+		.window_height = display_height * scalar,
 	};
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
