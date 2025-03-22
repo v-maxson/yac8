@@ -12,4 +12,4 @@ void yac_memory_##type##_del(yac_memory_##type *mem) {						\
 }
 
 DEFINE_YAC_MEMORY_TYPE_IMPL(u8)
-DEFINE_YAC_MEMORY_TYPE_IMPL(u32)
+DEFINE_YAC_MEMORY_TYPE_IMPL(bool)

@@ -7,7 +7,7 @@
 typedef struct yac_cpu {
 	// Memory and registers
 	yac_memory_u8 memory;
-	yac_memory_u32 display_memory;
+	yac_memory_bool display_memory;
 	yac_memory_u8 registers;
 	uint16_t i;
 	uint16_t pc;
