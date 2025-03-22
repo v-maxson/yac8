@@ -20,6 +20,7 @@ typedef struct yac_cpu {
 	// Display
 	size_t display_width;
 	size_t display_height;
+	bool redraw_requested;
 } yac_cpu;
 
 typedef struct yac_cpu_config {
