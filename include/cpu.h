@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include "memory.h"
 
-/// The CHIP-8 CPU.
 typedef struct yac_cpu {
 	// Memory and registers
 	yac_memory_u8 memory;
@@ -31,10 +30,8 @@ typedef struct yac_cpu_config {
 	// TODO - STACK_SIZE
 } yac_cpu_config;
 
-/// Creates a new CHIP-8 CPU.
 yac_cpu *yac_cpu_new(const yac_cpu_config config);
 
-/// Deletes a CHIP-8 CPU.
 void yac_cpu_del(yac_cpu *cpu);
 
 /// Executes a single cycle of the CHIP-8 CPU.

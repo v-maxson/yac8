@@ -6,7 +6,7 @@ yac_cpu *yac_cpu_new(const yac_cpu_config config)
 {
 	yac_cpu *cpu = malloc(sizeof(yac_cpu));
 	cpu->memory = yac_memory_u8_new(config.memory_size);
-	cpu->display_memory = yac_memory_u32_new(config.display_width * config.display_height);
+	cpu->display_memory = yac_memory_bool_new(config.display_width * config.display_height);
 	cpu->registers = yac_memory_u8_new(config.registers_size);
 	cpu->i = 0;
 	cpu->pc = 0;
@@ -14,13 +14,14 @@ yac_cpu *yac_cpu_new(const yac_cpu_config config)
 	cpu->sound_timer = 0;
 	cpu->display_width = config.display_width;
 	cpu->display_height = config.display_height;
+	cpu->redraw_requested = false;
 	return cpu;
 }
 
 void yac_cpu_del(yac_cpu *cpu)
 {
 	yac_memory_u8_del(&cpu->memory);
-	yac_memory_u32_del(&cpu->display_memory);
+	yac_memory_bool_del(&cpu->display_memory);
 	yac_memory_u8_del(&cpu->registers);
 	free(cpu);
 }

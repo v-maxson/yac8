@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-/// A single CHIP-8 instruction.
 typedef struct yac_instruction {
     uint8_t opcode;
     uint8_t x;
