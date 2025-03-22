@@ -33,12 +33,11 @@ void yac_cpu_del(yac_cpu *cpu)
 bool yac_cpu_cycle(yac_cpu *cpu)
 {
 	// Fetch instruction.
-	const uint8_t msb = cpu->memory.data[cpu->pc];
-	const uint8_t lsb = cpu->memory.data[cpu->pc + 1];
-	const yac_instruction instruction = yac_decode_instruction(msb, lsb);
+	const yac_instruction instruction = yac_decode_instruction(
+		cpu->memory.data[cpu->pc], cpu->memory.data[cpu->pc + 1]);
 
 	// TODO - Fetch instruction and execute it.
-	printf("Fetched instruction: 0x%02X%02X\n", msb, lsb);
+	printf("Fetched instruction: 0x%04X\n", instruction.raw);
 
 	if (cpu->pc + 2 >= cpu->memory.size) {
 		return false;
