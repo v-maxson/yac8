@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include "cpu.h"
+#include "instruction.h"
+
+yac_cpu *yac_cpu_new(const yac_cpu_config config)
+{
+	yac_cpu *cpu = malloc(sizeof(yac_cpu));
+	cpu->memory = yac_memory_u8_new(config.memory_size);
+	cpu->display_memory = yac_memory_u32_new(config.display_width * config.display_height);
+	cpu->registers = yac_memory_u8_new(config.registers_size);
+	cpu->i = 0;
+	cpu->pc = 0;
+	cpu->delay_timer = 0;
+	cpu->sound_timer = 0;
+	cpu->display_width = config.display_width;
+	cpu->display_height = config.display_height;
+	return cpu;
+}
+
+void yac_cpu_del(yac_cpu *cpu)
+{
+	yac_memory_u8_del(&cpu->memory);
+	yac_memory_u32_del(&cpu->display_memory);
+	yac_memory_u8_del(&cpu->registers);
+	free(cpu);
+}
+
+bool yac_cpu_cycle(yac_cpu *cpu)
+{
+	// Fetch instruction.
+	const uint8_t msb = cpu->memory.data[cpu->pc];
+	const uint8_t lsb = cpu->memory.data[cpu->pc + 1];
+	const yac_instruction instruction = yac_decode_instruction(msb, lsb);
+
+	// TODO - Fetch instruction and execute it.
+	printf("Fetched instruction: 0x%02X%02X\n", msb, lsb);
+
+	if (cpu->pc + 2 >= cpu->memory.size) {
+		return false;
+	}
+	cpu->pc += 2;
+
+	return true;
+}
