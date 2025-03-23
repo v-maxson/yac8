@@ -1,7 +1,7 @@
 #ifndef __YAC_PLATFORM_LAYER_H__
 #define __YAC_PLATFORM_LAYER_H__
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "memory.h"
 
 typedef struct yac_platform {
