@@ -3,6 +3,7 @@
 #include <sodium.h>
 #include "cpu.h"
 #include "platform.h"
+#include "timer.h"
 
 int main(void)
 {
@@ -37,7 +38,9 @@ int main(void)
 	};
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
+	yac_timer timer = yac_timer_new(60.0f);
 	while (1) {
+		if (!yac_timer_update(&timer)) continue;
 		if (!yac_cpu_cycle(cpu)) break;
 
 		if (cpu->redraw_requested) {
