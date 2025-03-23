@@ -8,7 +8,7 @@
 int main(void)
 {
 	// Initialize SDL2.
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
 		fprintf(stderr, "Failed to initialize SDL2: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}
