@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "cpu.h"
 #include "instruction.h"
+#include "instruction_set.h"
 
 yac_cpu *yac_cpu_new(const yac_cpu_config config)
 {
@@ -38,9 +39,16 @@ bool yac_cpu_cycle(yac_cpu *cpu)
 	const yac_instruction instruction = yac_decode_instruction(
 		cpu->memory.data[cpu->pc], cpu->memory.data[cpu->pc + 1]);
 
-	// TODO - Fetch instruction and execute it.
-	printf("Fetched instruction: 0x%04X\n", instruction.raw);
+	// Execute
+	instruction_logic *logic = instruction_set[instruction.opcode];
+	if (logic == NULL) {
+		fprintf(stderr, "Unknown opcode: 0x%02X\n", instruction.opcode);
+		return false;
+	}
+	printf("Executing instruction: 0x%04X\n", instruction.raw);
+	logic(cpu, instruction);
 
+	// Increment PC
 	if (cpu->pc + 2 >= cpu->memory.size) {
 		return false;
 	}
