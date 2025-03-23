@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define NANOS_PER_SECOND 1000000000
-
 typedef struct yac_timer {
 	uint64_t delta;
 	uint64_t old;
