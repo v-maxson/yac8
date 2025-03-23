@@ -38,9 +38,7 @@ int main(void)
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
 	while (1) {
-		if (!yac_cpu_cycle(cpu)) {
-			break;
-		}
+		if (!yac_cpu_cycle(cpu)) break;
 
 		if (cpu->redraw_requested) {
 			yac_platform_render(&platform_layer,
