@@ -14,6 +14,7 @@ yac_cpu *yac_cpu_new(const yac_cpu_config config)
 	cpu->registers = yac_memory_u8_new(config.registers_size);
 	cpu->i = 0;
 	cpu->pc = 0;
+	cpu->stack = yac_stack_new(config.stack_size);
 	cpu->delay_timer = 0;
 	cpu->sound_timer = 0;
 	cpu->display_width = config.display_width;
@@ -27,6 +28,7 @@ void yac_cpu_del(yac_cpu *cpu)
 	yac_memory_u8_del(&cpu->memory);
 	yac_memory_bool_del(&cpu->display_memory);
 	yac_memory_u8_del(&cpu->registers);
+	yac_stack_del(cpu->stack);
 	free(cpu);
 }
 

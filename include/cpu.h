@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "memory.h"
+#include "stack.h"
 
 typedef struct yac_cpu {
 	// Memory and registers
@@ -11,7 +12,7 @@ typedef struct yac_cpu {
 	yac_memory_u8 registers;
 	uint16_t i;
 	uint16_t pc;
-	// TODO - STACK
+	yac_stack *stack;
 
 	// Timers
 	uint8_t delay_timer;
@@ -28,7 +29,7 @@ typedef struct yac_cpu_config {
 	size_t registers_size;
 	size_t display_width;
 	size_t display_height;
-	// TODO - STACK_SIZE
+	size_t stack_size;
 } yac_cpu_config;
 
 yac_cpu *yac_cpu_new(const yac_cpu_config config);
