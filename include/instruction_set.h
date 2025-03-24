@@ -4,7 +4,7 @@
 #include "cpu.h"
 #include "instruction.h"
 
-typedef void *(instruction_logic)(yac_cpu *cpu,
+typedef void (instruction_logic)(yac_cpu *cpu,
 				  const yac_instruction instruction);
 
 const instruction_logic *instruction_set[16] = { NULL, NULL, NULL, NULL,
