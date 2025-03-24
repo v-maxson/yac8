@@ -3,6 +3,8 @@
 #include <argp.h>
 #include <stdlib.h>
 
+#define ARGP_REQUIRED_ARG_COUNT 1
+
 const char *argp_program_version = "yac " YAC_VERSION_STRING;
 const char *argp_program_bug_address = YAC_REPO_URL "/issues";
 static char doc[] = "Yet Another CHIP-8 Emulator";
@@ -13,7 +15,7 @@ static struct argp_option options[] = { { "frequency", 'f', "FREQUENCY", 0,
 					{ 0 } };
 
 struct arguments {
-	char *args[1]; // ROM_PATH
+	char *args[ARGP_REQUIRED_ARG_COUNT]; // ROM_PATH
 	int frequency;
 };
 
@@ -26,12 +28,12 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
 		arguments->frequency = (int)strtol(arg, NULL, 10);
 		break;
 	case ARGP_KEY_ARG:
-		if (state->arg_num >= 1)
+		if (state->arg_num >= ARGP_REQUIRED_ARG_COUNT)
 			argp_usage(state);
 		arguments->args[state->arg_num] = arg;
 		break;
 	case ARGP_KEY_END:
-		if (state->arg_num < 1)
+		if (state->arg_num < ARGP_REQUIRED_ARG_COUNT)
 			argp_usage(state);
 		break;
 	default:
