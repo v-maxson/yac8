@@ -40,4 +40,8 @@ void yac_cpu_del(yac_cpu *cpu);
 /// Returns true if the CPU should continue executing, false otherwise.
 bool yac_cpu_cycle(yac_cpu *cpu);
 
+/// Loads a ROM into the CPU's memory.
+/// Returns true if the ROM was loaded successfully, false otherwise.
+bool yac_cpu_load_rom(yac_cpu *cpu, const char *rom_path);
+
 #endif
