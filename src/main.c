@@ -4,9 +4,12 @@
 #include "cpu.h"
 #include "platform.h"
 #include "timer.h"
+#include "cli.h"
 
-int main(void)
+int main(const int argc, char *argv[])
 {
+	const yac_cli_args args = yac_cli_parse(argc, argv);
+
 	// Initialize SDL2.
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
 		fprintf(stderr, "Failed to initialize SDL2: %s\n", SDL_GetError());
@@ -38,7 +41,7 @@ int main(void)
 	};
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
-	yac_timer timer = yac_timer_new(60.0f);
+	yac_timer timer = yac_timer_new((float)args.clock_speed);
 	while (1) {
 		if (!yac_timer_update(&timer)) continue;
 		if (!yac_cpu_cycle(cpu)) break;
