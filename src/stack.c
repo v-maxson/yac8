@@ -32,18 +32,19 @@ bool yac_stack_push(yac_stack *stack, const uint16_t value)
 	return true;
 }
 
-uint16_t yac_stack_pop(yac_stack *stack)
+bool yac_stack_pop(yac_stack *stack, uint16_t *value)
 {
-	if (stack->top < 0) return 0;
+	if (stack->top < 0) return false;
 
-	const uint16_t value = stack->data[stack->top];
+	*value = stack->data[stack->top];
 	stack->top--;
-	return value;
+	return true;
 }
 
-uint16_t yac_stack_peek(const yac_stack *stack)
+bool yac_stack_peek(const yac_stack *stack, uint16_t *value)
 {
-	if (stack->top < 0) return 0;
+	if (stack->top < 0) return false;
 
-	return stack->data[stack->top];
+	*value = stack->data[stack->top];
+	return true;
 }
