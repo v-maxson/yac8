@@ -24,7 +24,7 @@ int main(const int argc, char *argv[])
 
 	const int display_width = 64;
 	const int display_height = 32;
-	const int scalar = 10;
+	const int scalar = args.display_scale;
 
 	const yac_cpu_config config = {
 		.memory_size = 4096,
