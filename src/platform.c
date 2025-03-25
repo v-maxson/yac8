@@ -2,10 +2,10 @@
 
 yac_platform yac_platform_new(const yac_platform_config config)
 {
-	SDL_Window *window =
-		SDL_CreateWindow(config.window_title, SDL_WINDOWPOS_CENTERED,
-				 SDL_WINDOWPOS_CENTERED, config.window_width,
-				 config.window_height, SDL_WINDOW_SHOWN);
+	SDL_Window *window = SDL_CreateWindow(
+		config.window_title, SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED, config.window_width * config.scalar,
+		config.window_height * config.scalar, SDL_WINDOW_SHOWN);
 
 	SDL_Renderer *renderer =
 		SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -46,9 +46,9 @@ void yac_platform_render(const yac_platform *platform_layer,
 	size_t i = 0;
 	for (; i + 3 < total_pixels; i += 4) {
 		pixels[i] = display_memory->data[i] ? color : ~color;
-		pixels[i+1] = display_memory->data[i+1] ? color : ~color;
-		pixels[i+2] = display_memory->data[i+2] ? color : ~color;
-		pixels[i+3] = display_memory->data[i+3] ? color : ~color;
+		pixels[i + 1] = display_memory->data[i + 1] ? color : ~color;
+		pixels[i + 2] = display_memory->data[i + 2] ? color : ~color;
+		pixels[i + 3] = display_memory->data[i + 3] ? color : ~color;
 	}
 	// Handle remaining pixels
 	for (; i < total_pixels; i++) {

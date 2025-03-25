@@ -14,6 +14,7 @@ typedef struct yac_platform_config {
 	const char *window_title;
 	int window_width;
 	int window_height;
+	int scalar;
 } yac_platform_config;
 
 yac_platform yac_platform_new(const yac_platform_config config);

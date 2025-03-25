@@ -41,8 +41,9 @@ int main(const int argc, char *argv[])
 
 	const yac_platform_config platform_config = {
 		.window_title = "Yet Another CHIP-8 Emulator",
-		.window_width = display_width * scalar,
-		.window_height = display_height * scalar,
+		.window_width = display_width,
+		.window_height = display_height,
+		.scalar = scalar
 	};
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
