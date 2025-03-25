@@ -8,6 +8,7 @@ typedef struct yac_instruction {
 	uint8_t opcode;
 	uint8_t x;
 	uint8_t y;
+	uint8_t n;
 	uint8_t kk;
 	uint16_t nnn;
 } yac_instruction;
