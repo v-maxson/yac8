@@ -12,7 +12,8 @@ int main(const int argc, char *argv[])
 
 	// Initialize SDL2.
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
-		fprintf(stderr, "Failed to initialize SDL2: %s\n", SDL_GetError());
+		fprintf(stderr, "Failed to initialize SDL2: %s\n",
+			SDL_GetError());
 		return EXIT_FAILURE;
 	}
 
@@ -35,7 +36,8 @@ int main(const int argc, char *argv[])
 	yac_cpu *cpu = yac_cpu_new(config);
 
 	// Load ROM.
-	if (!yac_cpu_load_rom(cpu, args.rom_path)) return EXIT_FAILURE;
+	if (!yac_cpu_load_rom(cpu, args.rom_path))
+		return EXIT_FAILURE;
 
 	const yac_platform_config platform_config = {
 		.window_title = "Yet Another CHIP-8 Emulator",

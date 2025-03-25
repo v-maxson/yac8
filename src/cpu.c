@@ -11,7 +11,8 @@ yac_cpu *yac_cpu_new(const yac_cpu_config config)
 	}
 
 	cpu->memory = yac_memory_u8_new(config.memory_size);
-	cpu->display_memory = yac_memory_bool_new(config.display_width * config.display_height);
+	cpu->display_memory = yac_memory_bool_new(config.display_width *
+						  config.display_height);
 	cpu->registers = yac_memory_u8_new(config.registers_size);
 	cpu->i = 0;
 	cpu->pc = 0x200;

@@ -4,7 +4,8 @@
 yac_stack *yac_stack_new(const size_t size)
 {
 	yac_stack *stack = malloc(sizeof(yac_stack));
-	if (stack == NULL) return NULL;
+	if (stack == NULL)
+		return NULL;
 
 	stack->size = size;
 	stack->top = -1;
@@ -25,7 +26,8 @@ void yac_stack_del(yac_stack *stack)
 
 bool yac_stack_push(yac_stack *stack, const uint16_t value)
 {
-	if (stack->top + 1 >= stack->size) return false;
+	if (stack->top + 1 >= stack->size)
+		return false;
 
 	stack->top++;
 	stack->data[stack->top] = value;
@@ -34,7 +36,8 @@ bool yac_stack_push(yac_stack *stack, const uint16_t value)
 
 bool yac_stack_pop(yac_stack *stack, uint16_t *value)
 {
-	if (stack->top < 0) return false;
+	if (stack->top < 0)
+		return false;
 
 	*value = stack->data[stack->top];
 	stack->top--;
@@ -43,7 +46,8 @@ bool yac_stack_pop(yac_stack *stack, uint16_t *value)
 
 bool yac_stack_peek(const yac_stack *stack, uint16_t *value)
 {
-	if (stack->top < 0) return false;
+	if (stack->top < 0)
+		return false;
 
 	*value = stack->data[stack->top];
 	return true;
