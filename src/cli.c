@@ -3,7 +3,7 @@
 #include <argp.h>
 #include <stdlib.h>
 
-#define ARGP_REQUIRED_ARG_COUNT 2
+#define ARGP_REQUIRED_ARG_COUNT 1
 
 const char *argp_program_version = "yac " YAC_VERSION_STRING;
 const char *argp_program_bug_address = YAC_REPO_URL "/issues";
