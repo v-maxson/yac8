@@ -5,13 +5,13 @@
 #include <stdbool.h>
 
 typedef struct yac_timer {
-	uint64_t delta;
+	double delta;
 	uint64_t old;
-	float accumulator;
-	float rate;
+	double accumulator;
+	uint64_t rate;
 } yac_timer;
 
-yac_timer yac_timer_new(const float rate);
+yac_timer yac_timer_new(const uint64_t rate);
 
 /// Returns true when logic should be updated.
 bool yac_timer_update(yac_timer *timer);

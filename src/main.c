@@ -44,10 +44,12 @@ int main(const int argc, char *argv[])
 	};
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
-	yac_timer timer = yac_timer_new((float)args.clock_speed);
+	yac_timer timer = yac_timer_new(args.clock_speed);
 	while (1) {
-		if (!yac_timer_update(&timer)) continue;
-		if (!yac_cpu_cycle(cpu)) break;
+		if (!yac_timer_update(&timer))
+			continue;
+		if (!yac_cpu_cycle(cpu))
+			break;
 
 		if (cpu->redraw_requested) {
 			yac_platform_render(&platform_layer,
