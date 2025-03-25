@@ -48,7 +48,9 @@ int main(const int argc, char *argv[])
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
 	yac_timer timer = yac_timer_new(args.clock_speed);
-	while (1) {
+	bool running = true;
+	SDL_Event event;
+	while (running) {
 		if (!yac_timer_update(&timer))
 			continue;
 		if (!yac_cpu_cycle(cpu))
@@ -59,6 +61,16 @@ int main(const int argc, char *argv[])
 					    &cpu->display_memory, display_width,
 					    display_height, 0xFFFFFFFF);
 			cpu->redraw_requested = false;
+		}
+
+		// Handle events.
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_QUIT:
+				running = false;
+				break;
+			default:;
+			}
 		}
 	}
 
