@@ -11,10 +11,11 @@ yac_cpu *yac_cpu_new(const yac_cpu_config config)
 	}
 
 	cpu->memory = yac_memory_u8_new(config.memory_size);
-	cpu->display_memory = yac_memory_bool_new(config.display_width * config.display_height);
+	cpu->display_memory = yac_memory_bool_new(config.display_width *
+						  config.display_height);
 	cpu->registers = yac_memory_u8_new(config.registers_size);
 	cpu->i = 0;
-	cpu->pc = 0;
+	cpu->pc = 0x200;
 	cpu->stack = yac_stack_new(config.stack_size);
 	cpu->delay_timer = 0;
 	cpu->sound_timer = 0;
@@ -53,6 +54,30 @@ bool yac_cpu_cycle(yac_cpu *cpu)
 		return false;
 	}
 	cpu->pc += 2;
+
+	return true;
+}
+
+bool yac_cpu_load_rom(yac_cpu *cpu, const char *rom_path)
+{
+	FILE *rom_file = fopen(rom_path, "rb");
+	if (rom_file == NULL) {
+		fprintf(stderr, "Failed to open ROM file: %s\n", rom_path);
+		return false;
+	}
+
+	fseek(rom_file, 0, SEEK_END);
+	long rom_size = ftell(rom_file);
+	rewind(rom_file);
+
+	if (rom_size > cpu->memory.size - 0x200) {
+		fprintf(stderr, "ROM file is too large: %ld bytes\n", rom_size);
+		fclose(rom_file);
+		return false;
+	}
+
+	fread(&cpu->memory.data[0x200], 1, rom_size, rom_file);
+	fclose(rom_file);
 
 	return true;
 }

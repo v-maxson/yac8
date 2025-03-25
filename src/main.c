@@ -4,12 +4,16 @@
 #include "cpu.h"
 #include "platform.h"
 #include "timer.h"
+#include "cli.h"
 
-int main(void)
+int main(const int argc, char *argv[])
 {
+	const yac_cli_args args = yac_cli_parse(argc, argv);
+
 	// Initialize SDL2.
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
-		fprintf(stderr, "Failed to initialize SDL2: %s\n", SDL_GetError());
+		fprintf(stderr, "Failed to initialize SDL2: %s\n",
+			SDL_GetError());
 		return EXIT_FAILURE;
 	}
 
@@ -21,7 +25,7 @@ int main(void)
 
 	const int display_width = 64;
 	const int display_height = 32;
-	const int scalar = 10;
+	const int scalar = args.display_scale;
 
 	const yac_cpu_config config = {
 		.memory_size = 4096,
@@ -31,6 +35,10 @@ int main(void)
 	};
 	yac_cpu *cpu = yac_cpu_new(config);
 
+	// Load ROM.
+	if (!yac_cpu_load_rom(cpu, args.rom_path))
+		return EXIT_FAILURE;
+
 	const yac_platform_config platform_config = {
 		.window_title = "Yet Another CHIP-8 Emulator",
 		.window_width = display_width * scalar,
@@ -38,10 +46,12 @@ int main(void)
 	};
 	yac_platform platform_layer = yac_platform_new(platform_config);
 
-	yac_timer timer = yac_timer_new(60.0f);
+	yac_timer timer = yac_timer_new(args.clock_speed);
 	while (1) {
-		if (!yac_timer_update(&timer)) continue;
-		if (!yac_cpu_cycle(cpu)) break;
+		if (!yac_timer_update(&timer))
+			continue;
+		if (!yac_cpu_cycle(cpu))
+			break;
 
 		if (cpu->redraw_requested) {
 			yac_platform_render(&platform_layer,

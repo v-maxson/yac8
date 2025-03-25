@@ -34,9 +34,24 @@ void yac_platform_render(const yac_platform *platform_layer,
 {
 	// Map display memory to an array of uint32_t ARGB color values. True should
 	// map to the color value, false should map to its inverse.
-	uint32_t *pixels =
-		malloc(display_width * display_height * sizeof(uint32_t));
-	for (size_t i = 0; i < display_width * display_height; i++) {
+	const size_t total_pixels = display_width * display_height;
+	uint32_t *pixels = malloc(total_pixels * sizeof(uint32_t));
+	if (pixels == NULL) {
+		// Handle memory allocation failure
+		SDL_SetError("Failed to allocate pixel buffer");
+		return;
+	}
+
+	// Process pixels in chunks of 4 for better performance
+	size_t i = 0;
+	for (; i + 3 < total_pixels; i += 4) {
+		pixels[i] = display_memory->data[i] ? color : ~color;
+		pixels[i+1] = display_memory->data[i+1] ? color : ~color;
+		pixels[i+2] = display_memory->data[i+2] ? color : ~color;
+		pixels[i+3] = display_memory->data[i+3] ? color : ~color;
+	}
+	// Handle remaining pixels
+	for (; i < total_pixels; i++) {
 		pixels[i] = display_memory->data[i] ? color : ~color;
 	}
 
