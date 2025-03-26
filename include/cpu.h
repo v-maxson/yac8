@@ -1,9 +1,13 @@
 #ifndef __YAC_CPU_H__
 #define __YAC_CPU_H__
 
+
 #include <stdbool.h>
+#include <SDL.h>
 #include "memory.h"
 #include "stack.h"
+
+extern const int WASD_KEYMAP[16];
 
 typedef struct yac_cpu {
 	// Memory and registers
@@ -22,6 +26,9 @@ typedef struct yac_cpu {
 	size_t display_width;
 	size_t display_height;
 	bool redraw_requested;
+
+	// Input
+	bool keys[16];
 } yac_cpu;
 
 typedef struct yac_cpu_config {

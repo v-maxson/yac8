@@ -63,6 +63,15 @@ int main(const int argc, char *argv[])
 			cpu->redraw_requested = false;
 		}
 
+		// Get key state.
+		int num_keys;
+		const uint8_t *keys = SDL_GetKeyboardState(&num_keys);
+		// Check if any of the pressed keys are in the WASD_KEYMAP,
+		// and set the corresponding key in the CPU.
+		for (int i = 0; i < 16; i++) {
+			cpu->keys[i] = keys[WASD_KEYMAP[i]];
+		}
+
 		// Handle events.
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {

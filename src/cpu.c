@@ -1,7 +1,15 @@
 #include <stdio.h>
 #include "cpu.h"
 #include "instruction.h"
+#include "fontset.h"
 #include "instruction_set.h"
+
+const int WASD_KEYMAP[16] = {
+	SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
+	SDL_SCANCODE_Q, SDL_SCANCODE_W, SDL_SCANCODE_E, SDL_SCANCODE_R,
+	SDL_SCANCODE_A, SDL_SCANCODE_S, SDL_SCANCODE_D, SDL_SCANCODE_F,
+	SDL_SCANCODE_Z, SDL_SCANCODE_X, SDL_SCANCODE_C, SDL_SCANCODE_V
+};
 
 yac_cpu *yac_cpu_new(const yac_cpu_config config)
 {
@@ -11,6 +19,12 @@ yac_cpu *yac_cpu_new(const yac_cpu_config config)
 	}
 
 	cpu->memory = yac_memory_u8_new(config.memory_size);
+
+	// Copy fontset to memory starting at 0x0000
+	for (size_t i = 0; i < 80; i++) {
+		cpu->memory.data[i] = yac_fontset[i];
+	}
+
 	cpu->display_memory = yac_memory_bool_new(config.display_width *
 						  config.display_height);
 	cpu->registers = yac_memory_u8_new(config.registers_size);
