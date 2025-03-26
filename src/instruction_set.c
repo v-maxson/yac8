@@ -138,8 +138,8 @@ void op_8(yac_cpu *cpu, const yac_instruction instruction)
 				cpu->registers.data[instruction.x];
 		} else {
 			cpu->registers.data[instruction.x] =
-				cpu->registers.data[instruction.y] -
-				cpu->registers.data[instruction.x];
+				cpu->registers.data[instruction.x] -
+				cpu->registers.data[instruction.y];
 		}
 		break;
 	case 0xE: // SHL Vx {, Vy}
@@ -218,13 +218,85 @@ void op_D(yac_cpu *cpu, const yac_instruction instruction)
 
 void op_E(yac_cpu *cpu, const yac_instruction instruction)
 {
+	switch (instruction.kk) {
+	case 0x9E:
+		// SKP Vx
+		if (cpu->keys[cpu->registers.data[instruction.x]])
+			cpu->pc += 2;
+		break;
+	case 0xA1:
+		// SKNP Vx
+		if (!cpu->keys[cpu->registers.data[instruction.x]])
+			cpu->pc += 2;
+		break;
+	default:;
+	}
 }
 
 void op_F(yac_cpu *cpu, const yac_instruction instruction)
 {
+	switch (instruction.kk) {
+	case 0x07:
+		// LD Vx, DT
+		cpu->delay_timer = cpu->registers.data[instruction.x];
+		break;
+	case 0x0A:
+		// LD Vx, K
+		// Wait for a key, then store the key in Vx
+		// (blocking operation, all instruction halted until next key event)
+		bool key_pressed = false;
+		for (size_t i = 0; i < 16; i++) {
+			if (cpu->keys[i]) {
+				cpu->registers.data[instruction.x] = i;
+				key_pressed = true;
+				break;
+			}
+		}
+		if (!key_pressed)
+			cpu->pc -= 2;
+		break;
+	case 0x15:
+		// LD DT, Vx
+		cpu->delay_timer = cpu->registers.data[instruction.x];
+		break;
+	case 0x18:
+		// LD ST, Vx
+		cpu->sound_timer = cpu->registers.data[instruction.x];
+		break;
+	case 0x1E:
+		// ADD I, Vx
+		cpu->i += cpu->registers.data[instruction.x];
+		break;
+	case 0x29:
+		// LD F, Vx
+		cpu->i = cpu->registers.data[instruction.x] * 5;
+		break;
+	case 0x33:
+		// LD B, Vx
+		cpu->memory.data[cpu->i] = cpu->registers.data[instruction.x] / 100;
+		cpu->memory.data[cpu->i + 1] =
+			(cpu->registers.data[instruction.x] / 10) % 10;
+		cpu->memory.data[cpu->i + 2] = cpu->registers.data[instruction.x] % 10;
+		break;
+	case 0x55:
+		// LD [I], Vx
+		// Store registers V0 through Vx in memory starting at location I.
+		for (size_t i = 0; i <= instruction.x; i++) {
+			cpu->memory.data[cpu->i + i] = cpu->registers.data[0 + i];
+		}
+		break;
+	case 0x65:
+		// LD Vx, [I]
+		// Read registers V0 through Vx from memory starting at location I.
+		for (size_t i = 0; i <= instruction.x; i++) {
+			cpu->registers.data[0 + i] = cpu->memory.data[cpu->i + i];
+		}
+		break;
+	default:;
+	}
 }
 
-const instruction_logic *instruction_set[16] = {
-	op_0, op_1, op_2, op_3, op_4, op_5, op_6, op_7,
-	op_8, op_9, op_A, op_B, op_C, op_D, op_E, op_F
-};
+const instruction_logic *instruction_set[16] = { op_0, op_1, op_2, op_3,
+						 op_4, op_5, op_6, op_7,
+						 op_8, op_9, op_A, op_B,
+						 op_C, op_D, op_E, op_F };
